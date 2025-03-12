@@ -1,0 +1,24 @@
+{
+  "name": "y",
+  "version": "1.0.0",
+  "main": "server.js",
+  "scripts": {
+    "dev": "node server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/thanhtungdo2003/blue_oc_usermanager_preintern.git"
+  },
+  "author": "DoThanhTung",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/thanhtungdo2003/blue_oc_usermanager_preintern/issues"
+  },
+  "homepage": "https://github.com/thanhtungdo2003/blue_oc_usermanager_preintern#readme",
+  "description": "",
+  "dependencies": {
+    "express": "^4.21.2",
+    "nodemon": "^3.1.9"
+  }
+}

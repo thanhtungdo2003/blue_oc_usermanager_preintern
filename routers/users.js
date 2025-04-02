@@ -1,6 +1,6 @@
 import express from 'express';
 import { login, userCreate, userDelete, userGetAll, userGetByID, userUpdate } from '../controllers/users.js';
-import { authMiddleware, checkUserUnique, isAdmin, validate } from '../middleware.js';
+import { authMiddleware, checkUserUnique, isAdmin, validate } from '../middlewares/middleware.js';
 import { userValidationRules } from '../validators.js';
 
 

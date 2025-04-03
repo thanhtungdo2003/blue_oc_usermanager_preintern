@@ -1,16 +1,18 @@
 import express from 'express';
-import { login, userCreate, userDelete, userGetAll, userGetByID, userUpdate } from '../controllers/users.js';
+import { login, userRegister, userDelete, userGetAll, userGetByID, userUpdate, setRole } from '../controllers/users.js';
 import { authMiddleware, checkUserUnique, isAdmin, validate } from '../middlewares/middleware.js';
-import { userValidationRules } from '../validators.js';
+import { userValidationRules } from '../../validators.js';
 
 
 const userRouter = express.Router();
 
-userRouter.post(`/users`, userValidationRules, validate, checkUserUnique, userCreate);
+userRouter.post(`/users`, userValidationRules, validate, checkUserUnique, userRegister);
 
 userRouter.post(`/users/login`, login);
 
-userRouter.put(`/users/:id`, authMiddleware, isAdmin, userUpdate);
+userRouter.put(`/users/:id`, authMiddleware, userUpdate);
+
+userRouter.put(`/users/:id/:role`, authMiddleware, isAdmin, setRole);
 
 userRouter.get(`/users`, authMiddleware, isAdmin, userGetAll);
 

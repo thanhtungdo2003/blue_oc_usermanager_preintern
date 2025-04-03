@@ -1,8 +1,8 @@
 
 -- mysql
 
-create database worldofbook;
-use worldofbook;
+create database worldofbookDB;
+use worldofbookDB;
 
 -- bảng người dùng
 CREATE TABLE user(
@@ -10,8 +10,10 @@ CREATE TABLE user(
     username VARCHAR(255) NOT NULL,
     email VARCHAR(125) NOT NULL UNIQUE,
     hasspass VARCHAR(125) NOT NULL,
+    user_role VARCHAR(10),
 	created_at timestamp default current_timestamp
 );
+
 
 
 -- bảng tác giả

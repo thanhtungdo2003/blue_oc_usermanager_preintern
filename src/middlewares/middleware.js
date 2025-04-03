@@ -1,7 +1,8 @@
 import jwt from 'jsonwebtoken'
-import { temp_users } from '../server.js';
 import { validationResult } from 'express-validator';
-
+import connection from '../config/db.js';
+import dotenv from 'dotenv';
+dotenv.config();
 export const authMiddleware = (req, res, next) => {
     let authHeader = req.headers.authorization;
     if (!authHeader) return res.status(401).json({ message: "Unauthorized - No token provided" });
@@ -14,8 +15,7 @@ export const authMiddleware = (req, res, next) => {
         return res.status(401).json({ message: "Unauthorized - No token provided" });
     }
     try {
-        const secretKey = 'mysecret'; // chuuỗi secret test
-        jwt.verify(token, secretKey, (err, payload) => {
+        jwt.verify(token, process.env.SECRET_KEY, (err, payload) => {
             if (err) res.status(403).json({ message: "Forbidden - Invalid token" });
             req.userDecode = payload; // Lưu thông tin user vào request
             next(); // Cho phép request tiếp tục
@@ -27,17 +27,29 @@ export const authMiddleware = (req, res, next) => {
 
 export const checkUserUnique = (req, res, next) => {
     const { username, email } = req.body;
-    const existingUser = temp_users.find(u => u.email === email || u.username === username);
+    
+    // Truy vấn cơ sở dữ liệu để kiểm tra email hoặc username đã tồn tại chưa
+    connection.query(
+        `SELECT * FROM user WHERE username = ? OR email = ?`, 
+        [username, email], 
+        (err, result) => {
+            if (err) {
+                return res.status(500).json({ error: "Lỗi khi truy vấn cơ sở dữ liệu" });
+            }
 
-    if (existingUser) {
-        return res.status(400).json({
-            error: existingUser.email === email ? "Email đã tồn tại!" : "Người dùng đã tồn tại!"
-        });
-    }
+            if (result.length > 0) {
+                // Kiểm tra nếu email hoặc username đã tồn tại
+                const existingUser = result[0];
+                return res.status(400).json({
+                    error: existingUser.email === email ? "Email đã tồn tại!" : "Người dùng đã tồn tại!"
+                });
+            }
 
-    next();
+            // Tiếp tục thực hiện các bước tiếp theo nếu không có lỗi
+            next();
+        }
+    );
 };
-
 
 export const isAdmin = (req, res, next) => {
     if (!req.userDecode) return res.status(400).json({ message: "Không thể xác thực quyền hạn" });

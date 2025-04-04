@@ -4,7 +4,7 @@ import connection from "../config/db.js";
 class Genre {
     /**
      * 
-     * @param {string} userId 
+     * @param {string} genreParentId 
      * @param {string} genreName 
      * @returns 
      */

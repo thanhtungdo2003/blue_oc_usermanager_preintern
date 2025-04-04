@@ -11,9 +11,9 @@ router.put(`/books/:id`, authMiddleware, isAdmin, bookUpdate);
 
 router.delete(`/books/:id`, authMiddleware, isAdmin, bookDelete);
 
-router.get(`/books/:id`, authMiddleware, isAdmin, bookGetByID);
+router.get(`/books/:id`, bookGetByID);
 
-router.get(`/books`, authMiddleware, isAdmin, bookGetAll);
+router.get(`/books`, bookGetAll);
 
 export default router;
 

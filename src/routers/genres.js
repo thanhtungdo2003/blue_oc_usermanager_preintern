@@ -11,9 +11,9 @@ router.put(`/genres/:id`, authMiddleware, isAdmin, genreUpdate);
 
 router.delete(`/genres/:id`, authMiddleware, isAdmin, genreDelete);
 
-router.get(`/genres/:id`, authMiddleware, isAdmin, genreGetByID);
+router.get(`/genres/:id`, genreGetByID);
 
-router.get(`/genres`, authMiddleware, isAdmin, genreGetAll);
+router.get(`/genres`, genreGetAll);
 
 export default router;
 

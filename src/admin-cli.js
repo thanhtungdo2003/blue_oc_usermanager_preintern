@@ -19,11 +19,22 @@ console.log("\x1b[0m");
 console.log("Ctrl + C để thoát");
 
 console.log("Các lệnh điều khiển: ");
-console.log("setrole, help");
+const cmds = ["setrole, rolelist, createrole, help, users"]
+console.log(cmds);
 
 function askCommand() {
     rl.question(">>> ", (command) => {
         switch (command) {
+            case "users":
+
+                User.getAll().then(result => {
+                    console.log(result)
+                }).catch(err => {
+                    console.log(err.message);
+                })
+                askCommand();
+
+                break;
             case "setrole":
                 rl.question("Nhập userId: ", (username) => {
                     rl.question("Nhập role: ", (perm) => {
@@ -36,6 +47,27 @@ function askCommand() {
                         askCommand();
                     });
                 });
+                break;
+            case "rolelist":
+                User.roleGetAll().then(result => {
+                    console.log(result)
+                }).catch(err => {
+                    console.log(err.message);
+                })
+                askCommand();
+                break;
+            case "createrole":
+                rl.question("Nhập tên role mới: ", (perm) => {
+                    User.createRole(perm).then(message => {
+                        console.log(message)
+                    }).catch(err => {
+                        console.log(err.message);
+                    })
+                    askCommand();
+                });
+                break;
+            case "help":
+                console.log(cmds)
                 break;
             default:
                 console.log("Lệnh không hợp lệ. Vui lòng nhập lại.");

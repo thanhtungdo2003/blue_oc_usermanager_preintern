@@ -55,13 +55,15 @@ class User {
             // Truy vấn DB để lấy thông tin user
             connection.query(`
                 SELECT 
-                    user_id,
-                    username,
-                    email,
-                    created_at,
-                    user_role,
-                    hasspass -- Lấy mật khẩu hash từ DB
-                FROM user
+                    u.user_id,
+                    u.username,
+                    u.email,
+                    u.created_at,
+                    r.role_id,
+                    r.role_name,
+                    u.hasspass -- Lấy mật khẩu hash từ DB
+                FROM user u
+                LEFT JOIN user_role r ON r.role_id = u.role_id
                 WHERE username = ? OR email = ?`, [username, username], (err, result) => {
                 if (err) {
                     return reject(new Error("Lỗi khi kiểm tra tài khoản: " + err.message));
@@ -88,7 +90,7 @@ class User {
                         username: user.username,
                         email: user.email,
                         create_at: user.created_at,
-                        role: user.user_role
+                        role: user.role_name
                     }
                     //mã hóa thông tin người dùng với SECRET_KEY tại file .env
                     const token = jwt.sign(userPayload, process.env.SECRET_KEY, { expiresIn: "6h" });
@@ -133,8 +135,18 @@ class User {
     // lấy danh sách người dùng
     static getAll() {
         return new Promise((resolve, rejects) => {
-            connection.query("SELECT user_id, username, email, created_at, user_role FROM user", (err, result) => {
-                if (err) return rejects(new Error("Lỗi khi lấy danh sách người dùng"));
+            connection.query(`
+                SELECT
+                    u.user_id,
+                    u.username, 
+                    u.email, 
+                    u.created_at, 
+                    u.role_id,
+                    r.role_name  
+                FROM user u
+                LEFT JOIN user_role r ON r.role_id = u.role_id
+                `, (err, result) => {
+                if (err) return rejects(new Error("Lỗi khi lấy danh sách người dùng: " + err));
                 resolve(result);
             })
         })
@@ -188,15 +200,40 @@ class User {
     static setRole(id, role) {
         return new Promise((resolve, rejects) => {
             if (!id || !role) return rejects(new Error("Id hoặc quyền không hợp lệ!"));
-            if (!["admin", "op", "product_manager"].includes(role)) return rejects(new Error("quyền không hợp lệ!"));
             connection.query(`
                 UPDATE user 
-                SET user_role = ?
+                SET role_id = ?
                 WHERE user_id = ?
                 `, [role, id], (err, result) => {
                 if (err) return rejects(new Error("Cập nhật không thành công: " + err));
 
                 resolve("Cập nhật quyền thành công!");
+            })
+        })
+    }
+
+
+    static createRole(roleName) {
+        return new Promise((resolve, rejects) => {
+            if (!roleName) return rejects(new Error("thông tin không hợp lệ!"));
+            connection.query(`
+                INSERT INTO user_role (role_id, role_name)
+                VALUES (?, ?)
+                `, [randomUUID(), roleName], (err, result) => {
+                if (err) return rejects(new Error("Cập nhật không thành công: " + err));
+
+                resolve("Cập nhật quyền thành công!");
+            })
+        })
+    }
+
+    static roleGetAll() {
+        return new Promise((resolve, rejects) => {
+            connection.query(`
+                SELECT * from user_role
+                `, [], (err, result) => {
+                if (err) return rejects(new Error("Cập nhật không thành công: " + err));
+                resolve(result);
             })
         })
     }

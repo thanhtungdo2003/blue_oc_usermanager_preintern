@@ -10,5 +10,4 @@ const connection = mysql.createConnection({
   connectTimeout: 10000
 });
 
-
 export default connection;

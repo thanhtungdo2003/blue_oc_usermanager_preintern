@@ -10,7 +10,7 @@ userRouter.post(`/users`, userValidationRules, validate, checkUserUnique, userRe
 
 userRouter.post(`/users/login`, login);
 
-userRouter.put(`/users/:id`, authMiddleware, userUpdate);
+userRouter.patch(`/users/:id`, authMiddleware, userUpdate);
 
 userRouter.put(`/users/:id/:role`, authMiddleware, isAdmin, setRole);
 

@@ -40,7 +40,12 @@ class User {
             });
         });
     }
-    // đăng nhập
+    /**
+     * 
+     * @param {string} username 
+     * @param {string} password 
+     * @returns 
+     */
     static login(username, password) {
         return new Promise((resolve, reject) => {
             if (!username || !password) {

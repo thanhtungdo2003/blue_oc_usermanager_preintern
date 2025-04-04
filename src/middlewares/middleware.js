@@ -27,11 +27,11 @@ export const authMiddleware = (req, res, next) => {
 
 export const checkUserUnique = (req, res, next) => {
     const { username, email } = req.body;
-    
+
     // Truy vấn cơ sở dữ liệu để kiểm tra email hoặc username đã tồn tại chưa
     connection.query(
-        `SELECT * FROM user WHERE username = ? OR email = ?`, 
-        [username, email], 
+        `SELECT * FROM user WHERE username = ? OR email = ?`,
+        [username, email],
         (err, result) => {
             if (err) {
                 return res.status(500).json({ error: "Lỗi khi truy vấn cơ sở dữ liệu" });
@@ -50,6 +50,14 @@ export const checkUserUnique = (req, res, next) => {
         }
     );
 };
+export const authorizeEdit = (req, res, next) => {
+    const userIdFromToken = req.userDecode.user_id; // Lấy ID từ token
+    const userIdFromParams = req.params.id; // ID của user cần sửa
+    if (req.userDecode.role === 'admin' || userIdFromToken === userIdFromParams) {
+        return next(); // Cho phép tiếp tục nếu là admin hoặc chủ tài khoản
+    }
+    return res.status(403).json({ message: "Not permission" });
+}
 
 export const isAdmin = (req, res, next) => {
     if (!req.userDecode) return res.status(400).json({ message: "Không thể xác thực quyền hạn" });

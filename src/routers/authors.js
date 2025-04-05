@@ -4,15 +4,15 @@ import { authorCreate, authorDelete, authorGetAll, authorGetByID, authorUpdate }
 
 const router = express.Router();
 
-router.post(`/authors/:id`, authMiddleware, isAdmin, authorCreate);
+router.post(`/`, authMiddleware, isAdmin, authorCreate);
 
-router.put(`/authors/:id`, authMiddleware, isAdmin, authorUpdate);
+router.put(`/:id`, authMiddleware, isAdmin, authorUpdate);
 
-router.delete(`/authors/:id`, authMiddleware, isAdmin, authorDelete);
+router.delete(`/:id`, authMiddleware, isAdmin, authorDelete);
 
-router.get(`/authors/:id`, authorGetByID);
+router.get(`/:id`, authorGetByID);
 
-router.get(`/authors`, authorGetAll);
+router.get(`/`, authorGetAll);
 
 export default router;
 

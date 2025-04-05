@@ -21,12 +21,14 @@ class User {
             // Truy vấn DB
             connection.query(`
                 SELECT 
-                    user_id,
-                    username,
-                    email,
-                    user_role,
-                    created_at
-                FROM user
+                    u.user_id,
+                    u.username,
+                    u.email,
+                    u.role_id,
+                    r.role_name,
+                    u.created_at
+                FROM user u
+                JOIN user_role r ON r.role_id = u.role_id
                 WHERE user_id = ?`, [id], (err, result) => {
                 if (err) {
                     return reject(new Error("Lỗi khi lấy người dùng: " + err.message));

@@ -1,18 +1,18 @@
+import { randomUUID } from "crypto";
 import connection from "../config/db.js";
 
 class Author {
     /**
      * 
-     * @param {string} authorId 
      * @param {string} authorName 
      * @returns 
      */
-    static create(authorId, authorName) {
+    static create(authorName) {
         return new Promise((resolve, reject) => {
             connection.query(`
                 INSERT INTO author(author_id, author_name, contribution_points)
                 VALUES (?, ?, ?)
-            `, [authorId, authorName, 0], (err, result) => {
+            `, [randomUUID(), authorName, 0], (err, result) => {
                 if (err) return reject(new Error("Error: " + err.message));
                 resolve("Create successfully");
             })

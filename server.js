@@ -3,6 +3,7 @@ import userRouter from "./src/routers/users.js";
 import genreRouter from "./src/routers/genres.js";
 import authorRouter from "./src/routers/authors.js";
 import bookRouter from "./src/routers/books.js";
+import analyticsRouter from "./src/routers/analytics.js";
 const app = express();
 app.use(express.json());
 
@@ -13,10 +14,11 @@ app.get("/", (req, res) => {
     res.send("Server đang chạy trên cổng 3000");
 });
 //router
-app.use('/api', userRouter);
-app.use('/api', authorRouter);
-app.use('/api', genreRouter);
-app.use('/api', bookRouter);
+app.use('/api/users', userRouter);
+app.use('/api/authors', authorRouter);
+app.use('/api/genres', genreRouter);
+app.use('/api/books', bookRouter);
+app.use('/api/analytics', analyticsRouter);
 
 
 app.listen(PORT, () => {

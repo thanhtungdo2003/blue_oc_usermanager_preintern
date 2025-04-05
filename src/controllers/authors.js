@@ -1,11 +1,9 @@
 import Author from "../models/authors.js";
 
 export const authorCreate = (req, res) => {
-    const {id} = req.params;
-    if (!id) return res.status(400).json({ error: "Lỗi ", message: "Id không hợp lệ" }); 
     const {authorName} = req.body;
     if (!authorName) return res.status(400).json({ error: "Lỗi ", message: "thông tin không xác định" });
-    Author.create(id, authorName).then(message => {
+    Author.create(authorName).then(message => {
         return res.json(message);
     }).catch(err => {
         console.error("Lỗi:", err);

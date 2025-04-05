@@ -1,19 +1,21 @@
 import express from "express";
-import { authMiddleware, isAdmin } from "../middlewares/middleware.js";
-import { bookCreate, bookDelete, bookGetAll, bookGetByID, bookUpdate } from "../controllers/books.js";
+import { authMiddleware, authorizeEdit, isAdmin } from "../middlewares/middleware.js";
+import { bookCreate, bookDelete, bookGetAll, bookGetByID, bookUpdate, borrowCreate } from "../controllers/books.js";
 
 
 const router = express.Router();
 
-router.post(`/books`, authMiddleware, isAdmin, bookCreate);
+router.post(`/`, authMiddleware, isAdmin, bookCreate);
 
-router.put(`/books/:id`, authMiddleware, isAdmin, bookUpdate);
+router.put(`/:id`, authMiddleware, isAdmin, bookUpdate);
 
-router.delete(`/books/:id`, authMiddleware, isAdmin, bookDelete);
+router.delete(`/:id`, authMiddleware, isAdmin, bookDelete);
 
-router.get(`/books/:id`, bookGetByID);
+router.post(`/books-borrowing/:id`, authMiddleware, authorizeEdit, borrowCreate);
 
-router.get(`/books`, bookGetAll);
+router.get(`/:id`, bookGetByID);
+
+router.get(`/`, bookGetAll);
 
 export default router;
 

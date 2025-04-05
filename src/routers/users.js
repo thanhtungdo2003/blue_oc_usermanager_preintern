@@ -6,18 +6,18 @@ import { userValidationRules } from '../../validators.js';
 
 const userRouter = express.Router();
 
-userRouter.post(`/users`, userValidationRules, validate, checkUserUnique, userRegister);
+userRouter.post(`/`, userValidationRules, validate, checkUserUnique, userRegister);
 
-userRouter.post(`/users/login`, login);
+userRouter.post(`/login`, login);
 
-userRouter.patch(`/users/:id`, authMiddleware, userUpdate);
+userRouter.patch(`/:id`, authMiddleware, userUpdate);
 
-userRouter.put(`/users/:id/:role`, authMiddleware, isAdmin, setRole);
+userRouter.put(`/:id/:role`, authMiddleware, isAdmin, setRole);
 
-userRouter.get(`/users`, authMiddleware, isAdmin, userGetAll);
+userRouter.get(`/`, authMiddleware, isAdmin, userGetAll);
 
-userRouter.get(`/users/:id`, authMiddleware, isAdmin, userGetByID);
+userRouter.get(`/:id`, authMiddleware, isAdmin, userGetByID);
 
-userRouter.delete(`/users/:id`, authMiddleware, isAdmin, userDelete);
+userRouter.delete(`/:id`, authMiddleware, isAdmin, userDelete);
 
 export default userRouter;

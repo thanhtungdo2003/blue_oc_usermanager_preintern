@@ -5,15 +5,15 @@ import { genreCreate, genreDelete, genreGetAll, genreGetByID, genreUpdate } from
 
 const router = express.Router();
 
-router.post(`/genres`, authMiddleware, isAdmin, genreCreate);
+router.post(`/`, authMiddleware, isAdmin, genreCreate);
 
-router.put(`/genres/:id`, authMiddleware, isAdmin, genreUpdate);
+router.put(`/:id`, authMiddleware, isAdmin, genreUpdate);
 
-router.delete(`/genres/:id`, authMiddleware, isAdmin, genreDelete);
+router.delete(`/:id`, authMiddleware, isAdmin, genreDelete);
 
-router.get(`/genres/:id`, genreGetByID);
+router.get(`/:id`, genreGetByID);
 
-router.get(`/genres`, genreGetAll);
+router.get(`/`, genreGetAll);
 
 export default router;
 

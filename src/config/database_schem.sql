@@ -66,10 +66,11 @@ CREATE TABLE borrowingHistory(
 	borrowing_id VARCHAR(50) PRIMARY KEY,
     user_id varchar(50), 
     created_at timestamp default current_timestamp,
-	returned_date timestamp NOT NULL,
+	returned_date timestamp,
     status ENUM('borrowed', 'returned') DEFAULT 'borrowed',
     FOREIGN KEY (user_id) REFERENCES user(user_id) ON DELETE SET NULL
 );
+
 
 CREATE INDEX idx_borrowing_id ON borrowingHistory(borrowing_id);
 CREATE INDEX idx_borrowing_user ON borrowingHistory(user_id);
